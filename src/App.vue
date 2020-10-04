@@ -8,6 +8,7 @@
             :question="questions[index]"
             :next="next"
             v-if="questions.length"
+            :last="index === 9 ? true : false"
           />
         </b-col>
       </b-row>
@@ -29,6 +30,7 @@ export default {
     return {
       questions: [],
       index: 0,
+      last: Boolean,
     };
   },
   methods: {

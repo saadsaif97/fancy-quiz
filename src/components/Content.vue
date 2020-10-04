@@ -17,12 +17,11 @@
       </b-list-group>
       <b-button
         variant="primary"
-        href="#"
         @click="submit"
         :disabled="!selected || submitted"
         >Submit
       </b-button>
-      <b-button variant="success" class="ml-2" @click="next" href="#"
+      <b-button variant="success" class="ml-2" @click="next" :disabled="last"
         >Next</b-button
       >
     </b-jumbotron>
@@ -36,6 +35,7 @@ export default {
   props: {
     question: Object,
     next: Function,
+    last: Boolean,
   },
   data() {
     return {
@@ -54,6 +54,9 @@ export default {
         this.shuffleAnswers();
         this.selected = false;
         this.submitted = false;
+        this.correctIndex = this.shuffledAnswers.indexOf(
+          this.question.correct_answer
+        );
         console.log(this.correctIndex);
       },
     },
@@ -101,11 +104,6 @@ export default {
       answers.push(this.question.correct_answer);
       return answers;
     },
-  },
-  mounted() {
-    this.shuffleAnswers();
-    this.correctIndex = this.answers.indexOf(this.question.correct_answer);
-    console.log(this.correctIndex);
   },
 };
 </script>
