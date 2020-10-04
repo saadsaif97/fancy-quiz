@@ -1,3 +1,3 @@
 # fancy-quiz
 
-> first vue app is [live](saadsaif_fancyQuiz_vue.surge.sh)
+> first vue app is [live](http://saadsaif_fancyquiz_vue.surge.sh/)
