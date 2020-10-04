@@ -10,12 +10,18 @@
           v-for="(answer, index) in shuffledAnswers"
           :key="index"
           @click="selectAnswer(index)"
-          :class="[selectedIndex === index ? 'selected' : '']"
+          :class="addClass(index)"
         >
           {{ answer }}
         </b-list-group-item>
       </b-list-group>
-      <b-button variant="primary" href="#">Submit</b-button>
+      <b-button
+        variant="primary"
+        href="#"
+        @click="submit"
+        :disabled="!selected || submitted"
+        >Submit
+      </b-button>
       <b-button variant="success" class="ml-2" @click="next" href="#"
         >Next</b-button
       >
@@ -35,6 +41,9 @@ export default {
     return {
       selectedIndex: Number,
       shuffledAnswers: [],
+      selected: false,
+      submitted: false,
+      correctIndex: Number,
     };
   },
   watch: {
@@ -43,13 +52,16 @@ export default {
       handler() {
         this.selectedIndex = null;
         this.shuffleAnswers();
+        this.selected = false;
+        this.submitted = false;
+        console.log(this.correctIndex);
       },
     },
   },
   methods: {
     selectAnswer(index) {
       this.selectedIndex = index;
-      console.log(index);
+      this.selected = true;
     },
     shuffleAnswers() {
       let answers = [
@@ -57,6 +69,30 @@ export default {
         this.question.correct_answer,
       ];
       this.shuffledAnswers = _.shuffle(answers);
+    },
+    submit() {
+      this.submitted = true;
+    },
+    addClass(index) {
+      let listClass = "";
+      if (
+        this.selected &&
+        !this.submitted &&
+        !this.submitted &&
+        index === this.selectedIndex
+      ) {
+        listClass = "selected";
+      } else if (this.submitted && index === this.correctIndex) {
+        listClass = "correct";
+      } else if (
+        this.submitted &&
+        index === this.selectedIndex &&
+        this.selectedIndex !== this.correctIndex
+      ) {
+        listClass = "incorrect";
+      }
+
+      return listClass;
     },
   },
   computed: {
@@ -68,6 +104,8 @@ export default {
   },
   mounted() {
     this.shuffleAnswers();
+    this.correctIndex = this.answers.indexOf(this.question.correct_answer);
+    console.log(this.correctIndex);
   },
 };
 </script>
@@ -81,5 +119,13 @@ export default {
 }
 .selected:hover {
   background-color: lightgoldenrodyellow;
+}
+.correct {
+  background-color: green;
+  color: #fff;
+}
+.incorrect {
+  background-color: orangered;
+  color: #fff;
 }
 </style>
