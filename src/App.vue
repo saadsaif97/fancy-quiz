@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Header :number="index" />
+    <Header :number="index" :correct="correct" :inCorrect="inCorrect" />
     <b-container class="my-5">
       <b-row>
         <b-col sm="10" offset-sm="1" md="8" offset-md="2" lg="6" offset-lg="3">
@@ -9,6 +9,7 @@
             :next="next"
             v-if="questions.length"
             :last="index === 9 ? true : false"
+            :check="check"
           />
         </b-col>
       </b-row>
@@ -30,12 +31,18 @@ export default {
     return {
       questions: [],
       index: 0,
+      correct: 0,
+      inCorrect: 0,
       last: Boolean,
     };
   },
   methods: {
     next() {
       this.index++;
+    },
+    check(isCorrect) {
+      if (isCorrect) this.correct++;
+      else this.inCorrect++;
     },
   },
   mounted() {

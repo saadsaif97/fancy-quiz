@@ -35,6 +35,7 @@ export default {
   props: {
     question: Object,
     next: Function,
+    check: Function,
     last: Boolean,
   },
   data() {
@@ -52,8 +53,8 @@ export default {
       handler() {
         this.selectedIndex = null;
         this.shuffleAnswers();
-        this.selected = false;
-        this.submitted = false;
+        this.selected = null;
+        this.submitted = null;
         this.correctIndex = this.shuffledAnswers.indexOf(
           this.question.correct_answer
         );
@@ -75,6 +76,11 @@ export default {
     },
     submit() {
       this.submitted = true;
+      if (this.selectedIndex === this.correctIndex) {
+        this.check(true);
+      } else {
+        this.check(false);
+      }
     },
     addClass(index) {
       let listClass = "";
@@ -119,11 +125,11 @@ export default {
   background-color: lightgoldenrodyellow;
 }
 .correct {
-  background-color: green;
+  background-color: rgb(46, 179, 90);
   color: #fff;
 }
 .incorrect {
-  background-color: orangered;
+  background-color: rgb(255, 113, 70);
   color: #fff;
 }
 </style>
